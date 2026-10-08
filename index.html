@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAM BODY FREE FIRE</title>
+<style>
+  /* Định dạng toàn cục */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  /* Khung chứa chính */
+  .container {
+    background: #111;
+    border: 2px solid #00ff88;
+    border-radius: 8px;
+    padding: 30px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0,255,136,0.3);
+  }
+  /* Tiêu đề */
+  h1 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px #00ff88;
+  }
+  /* Nhãn và ô nhập liệu */
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #00cc6a;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #00ff88;
+    color: #00ff88;
+    font-family: inherit;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    outline: none;
+  }
+  input:focus, select:focus {
+    box-shadow: 0 0 8px #00ff88;
+  }
+  /* Nút bấm */
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #00ff88;
+    color: #000;
+    border: none;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  button:hover {
+    background: #00cc6a;
+    box-shadow: 0 0 15px #00ff88;
+  }
+  /* Khu vực kết quả */
+  #ketqua {
+    margin-top: 18px;
+    padding: 12px;
+    background: #000;
+    border: 1px dashed #00ff88;
+    border-radius: 4px;
+    font-size: 13px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    min-height: 60px;
+    color: #00ff88;
+  }
+  /* Trạng thái loading */
+  .loading {
+    color: #ffaa00 !important;
+  }
+  /* Trạng thái lỗi */
+  .error {
+    color: #ff3333 !important;
+  }
+  /* Trạng thái thành công */
+  .success {
+    color: #00ff88 !important;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>[ IAM BODY FREE FIRE ]</h1>
+
+  <!-- Ô nhập ID tài khoản -->
+  <label for="uid">UID TÀI KHOẢN:</label>
+  <input type="text" id="uid" placeholder="Nhập UID Free Fire..." maxlength="12">
+
+  <!-- Chọn máy chủ -->
+  <label for="server">MÁY CHỦ:</label>
+  <select id="server">
+    <option value="vn">Việt Nam</option>
+    <option value="sg">Singapore</option>
+    <option value="id">Indonesia</option>
+    <option value="br">Brazil</option>
+    <option value="us">Hoa Kỳ</option>
+  </select>
+
+  <!-- Chọn chế độ IAM -->
+  <label for="mode">CHẾ ĐỘ IAM:</label>
+  <select id="mode">
+    <option value="body">IAM BODY</option>
+    <option value="head">IAM HEAD</option>
+    <option value="full">IAM FULL</option>
+  </select>
+
+  <!-- Nút thực thi -->
+  <button onclick="thucThiIAM()">KÍCH HOẠT IAM</button>
+
+  <!-- Khu vực hiển thị kết quả -->
+  <div id="ketqua">Chờ lệnh...</div>
+</div>
+
+<script>
+/* Hàm xử lý chính khi người dùng nhấn nút */
+function thucThiIAM() {
+  /* Lấy giá trị từ các ô nhập liệu */
+  var uid = document.getElementById('uid').value.trim();
+  var server = document.getElementById('server').value;
+  var mode = document.getElementById('mode').value;
+  var ketqua = document.getElementById('ketqua');
+
+  /* Kiểm tra UID rỗng */
+  if (uid === '') {
+    ketqua.className = 'error';
+    ketqua.textContent = 'LỖI: UID không được để trống.';
+    return;
+  }
+
+  /* Kiểm tra UID chỉ chứa số */
+  if (!/^[0-9]+$/.test(uid)) {
+    ketqua.className = 'error';
+    ketqua.textContent = 'LỖI: UID chỉ được chứa ký tự số.';
+    return;
+  }
+
+  /* Kiểm tra độ dài UID từ 6 đến 12 ký tự */
+  if (uid.length < 6 || uid.length > 12) {
+    ketqua.className = 'error';
+    ketqua.textContent = 'LỖI: UID phải có độ dài từ 6 đến 12 ký tự.';
+    return;
+  }
+
+  /* Hiển thị trạng thái đang xử lý */
+  ketqua.className = 'loading';
+  ketqua.textContent = '[ ĐANG KẾT NỐI MÁY CHỦ... ]';
+
+  /* Mô phỏng quá trình gửi yêu cầu IAM theo từng giai đoạn */
+  setTimeout(function() {
+    ketqua.textContent = '[ ĐANG XÁC THỰC UID: ' + uid + ' ]';
+  }, 800);
+
+  setTimeout(function() {
+    ketqua.textContent = '[ ĐANG GỬI GÓI TIN IAM... ]';
+  }, 1600);
+
+  setTimeout(function() {
+    ketqua.textContent = '[ ĐANG TIÊM DỮ LIỆU VÀO BODY... ]';
+  }, 2400);
+
+  /* Tạo kết quả cuối cùng sau khi hoàn tất mô phỏng */
+  setTimeout(function() {
+    /* Tạo mã token giả lập dựa trên UID và thời gian hiện tại */
+    var token = taoToken(uid, server);
+    /* Tạo chuỗi kết quả theo chế độ đã chọn */
+    var ketQuaCuoi = ''
+      + '=== KẾT QUẢ IAM ===\n'
+      + 'UID: ' + uid + '\n'
+      + 'MÁY CHỦ: ' + server.toUpperCase() + '\n'
+      + 'CHẾ ĐỘ: ' + mode.toUpperCase() + '\n'
+      + 'TOKEN: ' + token + '\n'
+      + 'TRẠNG THÁI: THÀNH CÔNG\n'
+      + '===================';
+
+    ketqua.className = 'success';
+    ketqua.textContent = ketQuaCuoi;
+  }, 3200);
+}
+
+/* Hàm tạo token giả lập từ UID và máy chủ */
+function taoToken(uid, server) {
+  /* Bảng ký tự dùng để sinh token */
+  var kyTu = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var token = '';
+  /* Kết hợp UID và server làm hạt giống */
+  var hatGiong = uid + server;
+  /* Sinh chuỗi 16 ký tự dựa trên hạt giống */
+  for (var i = 0; i < 16; i++) {
+    var chiSo = (hatGiong.charCodeAt(i % hatGiong.length) + i * 7) % kyTu.length;
+    token += kyTu.charAt(chiSo);
+  }
+  return token;
+}
+</script>
+
+</body>
+</html>
